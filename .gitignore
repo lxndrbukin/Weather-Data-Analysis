@@ -1,0 +1,12 @@
+# venv
+.*venv
+
+# other
+__pycache__/
+.idea/
+
+# env
+.*env*
+
+# data
+data/
