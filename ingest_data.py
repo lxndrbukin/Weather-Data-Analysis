@@ -3,10 +3,13 @@ from datetime import datetime
 import pandas as pd
 import os
 import requests
+import boto3
 
 load_dotenv()
 
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
+
+s3 = boto3.client('s3')
 
 def fetch_data():
     req = requests.get(
@@ -39,10 +42,18 @@ def save_local(df, dt):
     df.to_csv(path, index=False)
     return path
 
+def upload_to_s3(local_path, bucket, key):
+    s3.upload_file(local_path, bucket, key)
+
 def main():
     df = fetch_data()
     dt = datetime.today().strftime('%Y-%m-%d')
     path = save_local(df, dt)
+    upload_to_s3(
+        path,
+        'weather-data-analysis-bucket',
+        f'landing/date={dt}/weather_data.csv'
+    )
 
 if __name__ == '__main__':
     main()
