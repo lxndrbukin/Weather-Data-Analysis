@@ -10,3 +10,9 @@ __pycache__/
 
 # data
 data/
+
+# lambda
+lambda_package/
+
+# zip
+*.zip
